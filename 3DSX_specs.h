@@ -7,7 +7,7 @@
 
 #define _3DSX_MAGIC								 "3DSX"
 #define _3DSX_HDR_SIZE						sizeof (_3DSX_hdr)
-
+#define _3DSX_RELOC_HDR_SIZE			sizeof (_3DSX_relocation_hdr)
 #define CODE_START_ADDRESS        0x00100000
 
 
@@ -20,7 +20,7 @@ typedef struct __attribute__((__packed__)) {
 	ut32 code_seg_size;
 	ut32 rodata_seg_size;
 	ut32 data_seg_size;
-	ut32 bss_size;
+	ut32 bss_seg_size;
 } _3DSX_hdr;
 
 typedef struct __attribute__((__packed__)) {
