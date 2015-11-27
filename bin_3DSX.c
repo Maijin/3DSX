@@ -59,27 +59,27 @@ static RList* sections(RBinFile *arch) {
 		return ret;
 	strcpy (ptr->name, ".text");
 	ptr->paddr = _3dsxhdr.header_size + 3 * _3DSX_RELOC_HDR_SIZE;
-	ptr->size = _3dsxhdr.code_seg_size;
+	ptr->size = (_3dsxhdr.code_seg_size + 0xFFF) &(~0xFFF);
 	ptr->vaddr = CODE_START_ADDRESS;
-	ptr->vsize = _3dsxhdr.code_seg_size;
+	ptr->vsize = (_3dsxhdr.code_seg_size + 0xFFF) &(~0xFFF);
 	ptr->srwx = R_BIN_SCN_EXECUTABLE | R_BIN_SCN_MAP;;
 	r_list_append (ret, ptr);
 	if (!(ptr = R_NEW0 (RBinSection)))
 		return ret;
 	strcpy (ptr->name, ".rodata");
 	ptr->paddr = _3dsxhdr.header_size + 3 * _3DSX_RELOC_HDR_SIZE + _3dsxhdr.code_seg_size;
-	ptr->size = _3dsxhdr.rodata_seg_size;
+	ptr->size = (_3dsxhdr.rodata_seg_size + 0xFFF) &(~0xFFF);
 	ptr->vaddr = CODE_START_ADDRESS + 3 * _3DSX_RELOC_HDR_SIZE + _3dsxhdr.code_seg_size;
-	ptr->vsize = _3dsxhdr.rodata_seg_size;
+	ptr->vsize = (_3dsxhdr.rodata_seg_size + 0xFFF) &(~0xFFF);
 	ptr->srwx = R_BIN_SCN_READABLE | R_BIN_SCN_MAP;
 	r_list_append (ret, ptr);
 	if (!(ptr = R_NEW0 (RBinSection)))
 		return ret;
 	strcpy (ptr->name, ".data");
 	ptr->paddr = _3dsxhdr.header_size + 3 * _3DSX_RELOC_HDR_SIZE + _3dsxhdr.code_seg_size + _3dsxhdr.rodata_seg_size;
-	ptr->size = _3dsxhdr.data_seg_size - _3dsxhdr.bss_seg_size;
+	ptr->size = (_3dsxhdr.data_seg_size + 0xFFF) &(~0xFFF) - (_3dsxhdr.bss_seg_size + 0xFFF) &(~0xFFF);
 	ptr->vaddr = CODE_START_ADDRESS + 3 * _3DSX_RELOC_HDR_SIZE + _3dsxhdr.code_seg_size + _3dsxhdr.rodata_seg_size;
-	ptr->vsize = _3dsxhdr.data_seg_size - _3dsxhdr.bss_seg_size;
+	ptr->vsize = (_3dsxhdr.data_seg_size + 0xFFF) &(~0xFFF) - (_3dsxhdr.bss_seg_size + 0xFFF) &(~0xFFF);
 	ptr->srwx = R_BIN_SCN_READABLE | R_BIN_SCN_WRITABLE | R_BIN_SCN_MAP;
 	r_list_append (ret, ptr);
 	return ret;
